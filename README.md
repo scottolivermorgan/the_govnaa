@@ -69,6 +69,8 @@ Generate Jellyfin-style proposals from a scan:
 curl -X POST http://localhost:8000/scans/{scan_id}/proposals
 ```
 
+Generated proposals are validated before review. A proposal can be `pending_review`, `blocked`, or `needs_classification`; blocked proposals include a validation message such as an existing target path or duplicate destination.
+
 List scan history and catalogued assets:
 
 ```bash

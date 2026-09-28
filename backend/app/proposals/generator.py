@@ -2,11 +2,17 @@ from uuid import UUID
 
 from sqlmodel import Session, select
 
+from app.core.config import AllowedRoot
 from app.db.models import Asset, Proposal, Scan
 from app.profiles.jellyfin import parse_media_filename
+from app.proposals.validation import validate_proposals
 
 
-def generate_proposals_for_scan(session: Session, scan_id: UUID) -> list[Proposal]:
+def generate_proposals_for_scan(
+    session: Session,
+    scan_id: UUID,
+    root: AllowedRoot | None = None,
+) -> list[Proposal]:
     scan = session.get(Scan, scan_id)
     if scan is None:
         raise ValueError(f"Unknown scan: {scan_id}")
@@ -47,6 +53,9 @@ def generate_proposals_for_scan(session: Session, scan_id: UUID) -> list[Proposa
 
         session.add(proposal)
         proposals.append(proposal)
+
+    if root is not None:
+        validate_proposals(proposals, root)
 
     scan.proposals_created += len(proposals)
     session.add(scan)

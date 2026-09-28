@@ -42,7 +42,13 @@ def list_assets(session: Session = SessionDep) -> list[Asset]:
 @router.post("/scans/{scan_id}/proposals", response_model=list[Proposal])
 def create_proposals(scan_id: UUID, session: Session = SessionDep) -> list[Proposal]:
     try:
-        return generate_proposals_for_scan(session, scan_id)
+        scan = session.get(Scan, scan_id)
+        if scan is None:
+            raise ValueError(f"Unknown scan: {scan_id}")
+        root = find_configured_root(scan.root_id)
+        if root is None:
+            raise ValueError(f"Unknown root: {scan.root_id}")
+        return generate_proposals_for_scan(session, scan_id, root)
     except ValueError as error:
         raise HTTPException(status_code=404, detail=str(error)) from error
 

@@ -323,6 +323,7 @@ def dashboard() -> str:
 
     .pill.pending_review { background: #d7f1eb; color: var(--accent-dark); }
     .pill.needs_classification { background: var(--amber-soft); color: #8a5a00; }
+    .pill.blocked { background: #ffe1e1; color: var(--danger); }
     .pill.completed { background: #dff3e6; color: #176a3a; }
     .pill.failed { background: #ffe1e1; color: var(--danger); }
 
@@ -520,7 +521,9 @@ def dashboard() -> str:
 
     function render() {
       const pendingMoves = state.proposals.filter((proposal) => proposal.status === "pending_review");
-      const needsReview = state.proposals.filter((proposal) => proposal.status === "needs_classification");
+      const needsReview = state.proposals.filter(
+        (proposal) => proposal.status === "needs_classification" || proposal.status === "blocked"
+      );
 
       document.querySelector("#scan-count").textContent = state.scans.length;
       document.querySelector("#asset-count").textContent = state.assets.length;
@@ -546,12 +549,13 @@ def dashboard() -> str:
     }
 
     function proposalRow(proposal) {
+      const detail = proposal.validation_message || proposal.reason;
       return `<tr>
         <td class="path">${escapeHtml(proposal.source_relative_path)}</td>
         <td class="arrow">-&gt;</td>
         <td class="path">
           <div>${escapeHtml(proposal.target_relative_path)}</div>
-          <div class="path-muted">${escapeHtml(proposal.reason)}</div>
+          <div class="path-muted">${escapeHtml(detail)}</div>
         </td>
         <td>${pill(proposal.status)}</td>
         <td>${Math.round(proposal.confidence * 100)}%</td>

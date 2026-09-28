@@ -59,6 +59,8 @@ class Proposal(SQLModel, table=True):
     confidence: float
     reason: str
     status: str = "pending_review"
+    validation_status: str = "not_validated"
+    validation_message: str | None = None
     created_at: datetime = Field(default_factory=utc_now)
     reviewed_at: datetime | None = None
 
