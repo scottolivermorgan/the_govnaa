@@ -45,6 +45,7 @@ class Scan(SQLModel, table=True):
     files_seen: int = 0
     files_new: int = 0
     files_changed: int = 0
+    files_ignored: int = 0
     proposals_created: int = 0
 
 

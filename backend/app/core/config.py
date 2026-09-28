@@ -14,7 +14,7 @@ class AllowedRoot(BaseModel):
 
 class Settings(BaseSettings):
     app_name: str = "Data Governor"
-    database_path: Path = Path("/config/governor.db")
+    database_path: Path = Path("dev-data/governor.db")
     execution_enabled: bool = False
     roots: list[AllowedRoot] = Field(
         default_factory=lambda: [

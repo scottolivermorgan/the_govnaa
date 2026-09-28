@@ -51,6 +51,19 @@ curl http://localhost:8000/health
 
 The container only mounts `./dev-data/media` at `/data/test-media`, keeping development operations away from any real NAS paths.
 
+Run a read-only scan of the test media root:
+
+```bash
+curl -X POST http://localhost:8000/scans/test-media
+```
+
+List scan history and catalogued assets:
+
+```bash
+curl http://localhost:8000/scans
+curl http://localhost:8000/assets
+```
+
 ## Safety Principles
 
 - store relative paths against configured roots
