@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      GOVERNOR_DATABASE_PATH: /config/governor.db
+      GOVERNOR_EXECUTION_ENABLED: "true"
+    volumes:
+      - ./dev-data/media:/data/test-media
+      - governor-config:/config
+
+volumes:
+  governor-config:
