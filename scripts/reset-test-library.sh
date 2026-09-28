@@ -5,7 +5,7 @@ ROOT="${1:-dev-data/media}"
 
 rm -rf "$ROOT"
 mkdir -p \
-  "$ROOT/01-clean/Alien (1979)" \
+  "$ROOT/01-clean/Movies/Alien (1979)" \
   "$ROOT/02-needs-renaming" \
   "$ROOT/03-tv" \
   "$ROOT/04-ambiguous" \
@@ -13,7 +13,7 @@ mkdir -p \
   "$ROOT/06-weird" \
   "$ROOT/07-ignore"
 
-touch "$ROOT/01-clean/Alien (1979)/Alien (1979).mkv"
+touch "$ROOT/01-clean/Movies/Alien (1979)/Alien (1979).mkv"
 
 touch "$ROOT/02-needs-renaming/alien1979.mkv"
 touch "$ROOT/02-needs-renaming/The.Matrix.1999.REMUX.mkv"

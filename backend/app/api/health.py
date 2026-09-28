@@ -5,15 +5,6 @@ from app.core.config import get_settings
 router = APIRouter()
 
 
-@router.get("/")
-def index() -> dict[str, str]:
-    return {
-        "name": "Data Governor",
-        "status": "running",
-        "health": "/health",
-    }
-
-
 @router.get("/health")
 def health() -> dict[str, object]:
     settings = get_settings()

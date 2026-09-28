@@ -51,10 +51,22 @@ curl http://localhost:8000/health
 
 The container only mounts `./dev-data/media` at `/data/test-media`, keeping development operations away from any real NAS paths.
 
+Open the dashboard:
+
+```text
+http://localhost:8000/
+```
+
 Run a read-only scan of the test media root:
 
 ```bash
 curl -X POST http://localhost:8000/scans/test-media
+```
+
+Generate Jellyfin-style proposals from a scan:
+
+```bash
+curl -X POST http://localhost:8000/scans/{scan_id}/proposals
 ```
 
 List scan history and catalogued assets:
@@ -62,6 +74,7 @@ List scan history and catalogued assets:
 ```bash
 curl http://localhost:8000/scans
 curl http://localhost:8000/assets
+curl http://localhost:8000/proposals
 ```
 
 ## Safety Principles

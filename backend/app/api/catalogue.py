@@ -4,8 +4,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 
 from app.core.config import AllowedRoot, get_settings
-from app.db.models import Asset, Scan
+from app.db.models import Asset, Proposal, Scan
 from app.db.session import get_session
+from app.proposals.generator import generate_proposals_for_scan
 from app.scanner.media import scan_media_root
 
 router = APIRouter()
@@ -36,6 +37,19 @@ def get_scan(scan_id: UUID, session: Session = SessionDep) -> Scan:
 @router.get("/assets", response_model=list[Asset])
 def list_assets(session: Session = SessionDep) -> list[Asset]:
     return list(session.exec(select(Asset).order_by(Asset.relative_path)).all())
+
+
+@router.post("/scans/{scan_id}/proposals", response_model=list[Proposal])
+def create_proposals(scan_id: UUID, session: Session = SessionDep) -> list[Proposal]:
+    try:
+        return generate_proposals_for_scan(session, scan_id)
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+
+
+@router.get("/proposals", response_model=list[Proposal])
+def list_proposals(session: Session = SessionDep) -> list[Proposal]:
+    return list(session.exec(select(Proposal).order_by(Proposal.created_at.desc())).all())
 
 
 def find_configured_root(root_id: str) -> AllowedRoot | None:
